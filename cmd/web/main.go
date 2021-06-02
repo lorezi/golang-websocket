@@ -9,7 +9,7 @@ func main() {
 
 	r := routes()
 
-	log.Println("Starting web server on port 8080")
+	log.Println("Starting web server on port 8080 🤝")
 
 	err := http.ListenAndServe(":8080", r)
 	if err != nil {
