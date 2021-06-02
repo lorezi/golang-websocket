@@ -6,6 +6,7 @@ import (
 
 	"github.com/CloudyKit/jet/v6"
 	"github.com/gorilla/websocket"
+	"github.com/lorezi/golang-websocket/internal/dto"
 )
 
 var views = jet.NewSet(
@@ -17,13 +18,6 @@ var upgradeConn = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
 	CheckOrigin:     func(r *http.Request) bool { return true },
-}
-
-// WSJsonResponse defines the response sent back from websocket
-type WSJsonResponse struct {
-	Action      string `json:"action"`
-	Message     string `json:"message"`
-	MessageType string `json:"message_type"`
 }
 
 // Home displays the home page
@@ -43,7 +37,7 @@ func WSEndPoint(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println("Client connected to the endpoint")
 
-	res := WSJsonResponse{
+	res := dto.WSJsonResponse{
 		Message: `<em><small>Connected to server</small><em>`,
 	}
 
