@@ -4,9 +4,10 @@ import "github.com/gorilla/websocket"
 
 // WSJsonResponse defines the response sent back from websocket
 type WSJsonResponse struct {
-	Action      string `json:"action"`
-	Message     string `json:"message"`
-	MessageType string `json:"message_type"`
+	Action         string   `json:"action"`
+	Message        string   `json:"message"`
+	MessageType    string   `json:"message_type"`
+	ConnectedUsers []string `json:"connected_users"`
 }
 
 // WSPayloads defines the request sent to the websocket

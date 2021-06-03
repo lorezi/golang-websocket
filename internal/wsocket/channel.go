@@ -3,6 +3,7 @@ package wsocket
 import (
 	"fmt"
 	"log"
+	"sort"
 
 	"github.com/lorezi/golang-websocket/internal/dto"
 )
@@ -36,10 +37,35 @@ func ListenToWSChannel() {
 
 	for {
 		e := <-wsChan
-		res.Action = "Got here"
-		res.Message = fmt.Sprintf("Some message... and action was %s", e.Action)
-		broadcastToAll(res)
+		// res.Action = "Got here"
+		// res.Message = fmt.Sprintf("Some message... and action was %s", e.Action)
+		// broadcastToAll(res)
+
+		switch e.Action {
+		case "username":
+			// get a list of all users and send it back via broadcast
+			clients[e.Conn] = e.Username
+			users := getUsers()
+			res.Action = "list_users"
+			res.ConnectedUsers = users
+			broadcastToAll(res)
+		}
+
 	}
+}
+
+// getUsers builds users list and returns sorted users
+
+func getUsers() []string {
+	users := []string{}
+	for _, v := range clients {
+		users = append(users, v)
+	}
+
+	// sort the users
+	sort.Strings(users)
+
+	return users
 }
 
 func broadcastToAll(res dto.WSJsonResponse) {

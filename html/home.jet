@@ -47,6 +47,9 @@
             </div>
             <div class="col-md-4">
                 <h3>Who's Online</h3>
+                <ul id="online_users">
+
+                </ul>
             </div>
         </div>
 
@@ -72,8 +75,40 @@
         }
 
         socket.onmessage = (msg) => {
-            console.log(msg)
+           let data = JSON.parse(msg.data)
+           console.log("Action is", data.action)
+
+           switch (data.action) {
+               case "list_users":
+                   let ul = document.getElementById("online_users")
+                   while (ul.firstChild) ul.removeChild(ul.firstChild)
+
+                   if (data.connected_users.length > 0){
+                       data.connected_users.forEach(item => {
+                           let li = document.createElement("li")
+                           li.appendChild(document.createTextNode(item))
+                           ul.appendChild(li)
+
+                       });
+                   }
+
+                   break
+           
+               default:
+                   break;
+           }
         }
+
+        let userInput = document.getElementById("username")
+
+        userInput.addEventListener("change", function (){
+            let jsonData = {}
+            jsonData["action"] = "username"
+            jsonData["message"] = "message"
+            jsonData["username"] = this.value
+
+            socket.send(JSON.stringify(jsonData))
+        })
     })
 </script>
 </html>
